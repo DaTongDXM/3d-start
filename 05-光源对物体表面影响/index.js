@@ -2,7 +2,7 @@
  * @Author: wuxudong wuxudong@zbnsec.com
  * @Date: 2023-07-01 12:44:41
  * @LastEditors: wuxudong 953909305@qq.com
- * @LastEditTime: 2023-07-01 15:25:37
+ * @LastEditTime: 2023-08-11 16:22:06
  * @Description: 
  */
 import * as THREE from 'three';
@@ -22,10 +22,10 @@ const mesh=new THREE.Mesh(geometry,material)
 mesh.position.set(0,0,0)
 //把物体mesh添加到场景中
 scene.add(mesh)
-//点光源是一个灯泡，防止在一个位置向四周照射
+//点光源是一个灯泡，放置在一个位置向四周照射
 //两个参数，分别是颜色和光照强度
 const pointLight=new THREE.PointLight(0xFFFFFF,1)
-pointLight.position.set(400,400,100)
+pointLight.position.set(400,400,300)
 //#endregion
 
 //#region 创建三维坐标轴  

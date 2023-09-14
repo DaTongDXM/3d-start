@@ -2,7 +2,7 @@
  * @Author: wuxudong wuxudong@zbnsec.com
  * @Date: 2023-07-01 12:44:41
  * @LastEditors: wuxudong 953909305@qq.com
- * @LastEditTime: 2023-08-16 16:27:30
+ * @LastEditTime: 2023-08-17 11:38:43
  * @Description: 动画
  */
 import * as THREE from 'three';
@@ -11,26 +11,32 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene=new THREE.Scene()
 
-const boxGeometry=new THREE.BoxGeometry(100,100,100)
+const boxGeometry=new THREE.BoxGeometry(200,200,200)
 
 const material=new THREE.MeshLambertMaterial({
     color:0X00ffff,
     transparent:true,
     opacity:0.5
 })
-for (let j = 0; j < 10; j++) {
-    for (let i = 0; i < 10; i++) {
-        const mesh=new THREE.Mesh(boxGeometry,material)
-        mesh.position.set(i*200,0,j*200)
-        scene.add(mesh)
-     }
-    
-}
+const mesh=new THREE.Mesh(boxGeometry,material)
+scene.add(mesh)
 
+mesh.translateX(300)
+mesh.position.y=100
+mesh.scale.set(1,1,1)
 
-
+const fontGeometry=new THREE.PlaneGeometry(100,300)
+const fontMaterial=new THREE.MeshLambertMaterial({color:0x00ff00,transparent:true,opacity:0.5})
+fontMaterial.side=THREE.DoubleSide
+const plane=new THREE.Mesh(fontGeometry,fontMaterial)
+plane.position.x=700
+plane.position.y=150
+plane.position.z=150
+plane.id=1231
+scene.add(plane)
+console.log(plane)
 const pointLight=new THREE.PointLight(0xffffff, 1.0)
-pointLight.position.set(100,100,100)
+pointLight.position.set(300,300,300)
 
 const axesHelper=new THREE.AxesHelper(1000)
 
@@ -39,23 +45,32 @@ scene.add(pointLight)
 const width=window.innerWidth
 const height=window.innerHeight
 const camera=new THREE.PerspectiveCamera(90,width/height,1,8000)
-camera.position.set(-1200,800,-800)
+camera.position.set(800,800,800)
 camera.lookAt({x:600,y:1200,z:120})
 
 
-const render=new THREE.WebGLRenderer({
+const renderer=new THREE.WebGLRenderer({
     antialias:true
 })
-render.setSize(width,height)
-render.setClearColor(0x444444)
-document.body.append(render.domElement)
+renderer.setSize(width,height)
+renderer.setClearColor(0x444444)
+document.body.append(renderer.domElement)
 
 
-const orbitControls=new OrbitControls(camera,render.domElement)
+const orbitControls=new OrbitControls(camera,renderer.domElement)
 orbitControls.addEventListener('change',()=>{
-    render.render(scene,camera)
+    
+    renderer.render(scene,camera)
+   
 })
-render.render(scene,camera)
+function render(){
+     mesh.rotateY(0.01)
+     mesh.rotateX(0.01)
+     plane.rotateX(0.01)
+    renderer.render(scene,camera)
+    requestAnimationFrame(render)
+}
+render()
 //动态变化
 // window.onresize=function(){
 //     render.setSize(window.innerWidth,window.innerHeight)

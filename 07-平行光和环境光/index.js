@@ -32,7 +32,8 @@ directionLight.position.set(200,200,10)
 //不设置目标，默认是坐标原点
 directionLight.target=mesh
 
-const directional=new THREE.DirectionalLightHelper(directionLight,5,0xff0000)
+//用于模拟场景中平行光 DirectionalLight 的辅助对象. 其中包含了表示光位置的平面和表示光方向的线段.
+const directional=new THREE.DirectionalLightHelper(directionLight,5,0xffffff)
 //#endregion
 
 //#region 创建三维坐标轴  

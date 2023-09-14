@@ -2,7 +2,7 @@
  * @Author: wuxudong wuxudong@zbnsec.com
  * @Date: 2023-07-01 12:44:41
  * @LastEditors: wuxudong 953909305@qq.com
- * @LastEditTime: 2023-08-16 16:27:30
+ * @LastEditTime: 2023-08-18 17:34:16
  * @Description: 动画
  */
 import * as THREE from 'three';
@@ -11,51 +11,66 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene=new THREE.Scene()
 
-const boxGeometry=new THREE.BoxGeometry(100,100,100)
-
-const material=new THREE.MeshLambertMaterial({
-    color:0X00ffff,
+const box=new THREE.PlaneGeometry(20,20)
+const texture=new THREE.TextureLoader()
+const material=new THREE.MeshBasicMaterial({
+    color:0x00ff00,
+    map:texture.load('./TS2.0_台式机.png'),
     transparent:true,
-    opacity:0.5
+    side:THREE.DoubleSide
+})
+const material1=new THREE.MeshBasicMaterial({
+    color:0x00ff00,
+    map:texture.load('./TS2.0_移动端.png'),
+    transparent:true,
+    side:THREE.DoubleSide
 })
 for (let j = 0; j < 10; j++) {
-    for (let i = 0; i < 10; i++) {
-        const mesh=new THREE.Mesh(boxGeometry,material)
-        mesh.position.set(i*200,0,j*200)
-        scene.add(mesh)
-     }
-    
+for (let i = 0; i < 10; i++) {
+   let m= i%2===0?material:material1
+    const mesh=new THREE.Mesh(box,m)
+    mesh.position.set(i*20,j*20)
+scene.add(mesh)
 }
+}
+//添加一个辅助网格地面
+const gridHelper=new THREE.GridHelper(600,50,0x00ffff)
+gridHelper.position.y=-8
+scene.add(gridHelper)
+
+const pointLight=new THREE.PointLight(0xffffff, 1)
 
 
 
-const pointLight=new THREE.PointLight(0xffffff, 1.0)
-pointLight.position.set(100,100,100)
-
-const axesHelper=new THREE.AxesHelper(1000)
-
-scene.add(axesHelper)
 scene.add(pointLight)
 const width=window.innerWidth
 const height=window.innerHeight
 const camera=new THREE.PerspectiveCamera(90,width/height,1,8000)
-camera.position.set(-1200,800,-800)
+camera.position.set(30,30,30)
 camera.lookAt({x:600,y:1200,z:120})
 
 
-const render=new THREE.WebGLRenderer({
+const renderer=new THREE.WebGLRenderer({
     antialias:true
 })
-render.setSize(width,height)
-render.setClearColor(0x444444)
-document.body.append(render.domElement)
+renderer.setSize(width,height)
+renderer.setClearColor(0x444444)
+document.body.append(renderer.domElement)
 
 
-const orbitControls=new OrbitControls(camera,render.domElement)
+const orbitControls=new OrbitControls(camera,renderer.domElement)
 orbitControls.addEventListener('change',()=>{
-    render.render(scene,camera)
+    
+    renderer.render(scene,camera)
+   
 })
-render.render(scene,camera)
+function render(){
+ 
+
+    renderer.render(scene,camera)
+    requestAnimationFrame(render)
+}
+render()
 //动态变化
 // window.onresize=function(){
 //     render.setSize(window.innerWidth,window.innerHeight)

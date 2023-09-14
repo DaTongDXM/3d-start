@@ -2,7 +2,7 @@
  * @Author: wuxudong wuxudong@zbnsec.com
  * @Date: 2023-07-01 12:44:41
  * @LastEditors: wuxudong 953909305@qq.com
- * @LastEditTime: 2023-07-01 18:48:07
+ * @LastEditTime: 2023-08-14 15:55:29
  * @Description: 帧率，就是每秒完成渲染次数，一般高于60为最佳
  */
 import * as THREE from 'three';
